@@ -117,6 +117,20 @@ Authorization: Bearer <JWT_TOKEN>
 
 ---
 
+## Demo 測試資料
+
+專案啟動後若資料庫為空，會自動建立一批面試展示用資料：
+
+- Seller 帳號：`seller_demo` / `password123`
+- Buyer 帳號：`buyer_demo` / `password123`
+- 3 筆啟用中的商品
+- 1 筆停用商品（示範 soft delete / 下架）
+- 1 筆已建立訂單（含快照欄位資料）
+
+> 以上資料由 `DataInitializer` 在啟動時建立，僅在資料表為空時執行。
+
+---
+
 ## 啟動方式
 
 ### 1. 編譯與測試
