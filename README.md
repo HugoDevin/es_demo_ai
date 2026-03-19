@@ -3,6 +3,7 @@
 這是一個以 **Spring Boot 3** 建置的電商平台後端示範專案，實作了 Phase 1 所需的核心能力：
 
 - JWT 驗證與登入 / 登出 / 註冊
+- Thymeleaf 前端操作頁（可直接在瀏覽器展示 Demo 流程）
 - 商品列表、關鍵字查詢、單筆詳情
 - Seller 商品管理（新增 / 修改 / 上下架 / soft delete）
 - Buyer 建立訂單、查詢我的訂單、取消訂單
@@ -19,6 +20,7 @@
 - Spring Web
 - Spring Data JPA
 - Spring Security
+- Thymeleaf
 - H2 Database
 - JJWT
 - Lombok
@@ -117,6 +119,28 @@ Authorization: Bearer <JWT_TOKEN>
 
 ---
 
+## Demo 測試資料
+
+專案啟動後若資料庫為空，會自動建立一批面試展示用資料：
+
+- Seller 帳號：`seller_demo` / `password123`
+- Buyer 帳號：`buyer_demo` / `password123`
+- 3 筆啟用中的商品
+- 1 筆停用商品（示範 soft delete / 下架）
+- 1 筆已建立訂單（含快照欄位資料）
+
+> 以上資料由 `DataInitializer` 在啟動時建立，僅在資料表為空時執行。
+
+---
+
+## 前端操作頁
+
+- 首頁 `http://localhost:8080/` 提供 Thymeleaf 操作畫面
+- 可直接在頁面上使用 demo 帳號登入、取得 JWT、查詢商品與查看我的訂單
+- Seller token 可用來建立商品；Buyer token 可用來查詢訂單
+
+---
+
 ## 啟動方式
 
 ### 1. 編譯與測試
@@ -134,7 +158,10 @@ mvn spring-boot:run
 啟動後預設網址：
 
 - API: `http://localhost:8080`
+- 首頁說明: `http://localhost:8080/`
 - H2 Console: `http://localhost:8080/h2-console`
+
+> 注意：保護中的 API 不能直接靠瀏覽器跳出的帳密視窗登入。請先呼叫 `POST /api/v1/auth/login` 取得 JWT，再把 token 放進 `Authorization: Bearer <token>` header。
 
 ---
 

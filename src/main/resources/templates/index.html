@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Demo Console</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css">
+</head>
+<body>
+<div class="page">
+    <header class="hero">
+        <div>
+            <p class="eyebrow">Spring Boot 3 + Thymeleaf</p>
+            <h1 th:text="${projectName}">ecommerce-demo-backend</h1>
+            <p class="subtitle">面試展示用前端操作頁，直接在瀏覽器完成登入、查看商品與查詢訂單。</p>
+        </div>
+        <div class="hero-card">
+            <h2>Demo 帳號</h2>
+            <ul>
+                <li>Seller：<strong th:text="${sellerUsername}">seller_demo</strong> / <span th:text="${demoPassword}">password123</span></li>
+                <li>Buyer：<strong th:text="${buyerUsername}">buyer_demo</strong> / <span th:text="${demoPassword}">password123</span></li>
+            </ul>
+            <p>H2 Console：<a href="/h2-console" target="_blank" rel="noreferrer">/h2-console</a></p>
+        </div>
+    </header>
+
+    <main class="grid">
+        <section class="card">
+            <div class="card-header">
+                <h2>1. JWT 登入</h2>
+                <button class="ghost" id="fillSellerBtn">套用 Seller</button>
+                <button class="ghost" id="fillBuyerBtn">套用 Buyer</button>
+            </div>
+            <form id="loginForm" class="stack">
+                <label>帳號
+                    <input type="text" id="username" th:value="${sellerUsername}" required>
+                </label>
+                <label>密碼
+                    <input type="password" id="password" th:value="${demoPassword}" required>
+                </label>
+                <button type="submit">登入並取得 Token</button>
+            </form>
+            <label class="stack mt16">JWT Token
+                <textarea id="tokenBox" rows="6" placeholder="登入成功後會顯示 JWT"></textarea>
+            </label>
+            <div class="actions mt16">
+                <button id="copyTokenBtn" type="button" class="secondary">複製 Token</button>
+                <button id="logoutBtn" type="button" class="secondary">登出（加入黑名單）</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header">
+                <h2>2. 商品列表</h2>
+                <button id="loadProductsBtn" type="button">重新載入</button>
+            </div>
+            <div class="inline-form">
+                <input type="text" id="keyword" placeholder="輸入關鍵字，例如 keyboard">
+                <button id="searchProductsBtn" type="button" class="secondary">搜尋</button>
+            </div>
+            <pre id="productsResult" class="result"></pre>
+        </section>
+
+        <section class="card">
+            <div class="card-header">
+                <h2>3. Seller 新增商品</h2>
+                <span class="hint">需使用 Seller token</span>
+            </div>
+            <form id="createProductForm" class="stack">
+                <label>商品名稱<input type="text" id="productName" value="Interview Demo Product" required></label>
+                <label>描述<textarea id="productDescription" rows="3">Created from Thymeleaf demo page.</textarea></label>
+                <label>價格<input type="number" id="productPrice" value="499.00" step="0.01" min="0.01" required></label>
+                <label>庫存<input type="number" id="productStock" value="12" min="0" required></label>
+                <button type="submit">送出建立商品</button>
+            </form>
+            <pre id="createProductResult" class="result"></pre>
+        </section>
+
+        <section class="card">
+            <div class="card-header">
+                <h2>4. Buyer 我的訂單</h2>
+                <span class="hint">需使用 Buyer token</span>
+            </div>
+            <div class="actions">
+                <button id="loadOrdersBtn" type="button">載入我的訂單</button>
+            </div>
+            <pre id="ordersResult" class="result"></pre>
+        </section>
+    </main>
+
+    <section class="card full-width">
+        <div class="card-header">
+            <h2>操作提示</h2>
+        </div>
+        <ol class="tips">
+            <li>先用 Seller 或 Buyer 帳號登入，JWT 會顯示在上方文字框。</li>
+            <li>商品列表為公開 API，不需要登入。</li>
+            <li>新增商品請用 Seller token；查詢我的訂單請用 Buyer token。</li>
+            <li>如果操作失敗，請看各區塊下方的 JSON 結果與錯誤訊息。</li>
+        </ol>
+    </section>
+</div>
+
+<script th:inline="javascript">
+    window.demoUsers = {
+        seller: { username: [[${sellerUsername}]], password: [[${demoPassword}]] },
+        buyer: { username: [[${buyerUsername}]], password: [[${demoPassword}]] }
+    };
+</script>
+<script th:src="@{/js/app.js}" src="/js/app.js"></script>
+</body>
+</html>
